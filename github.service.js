@@ -6,7 +6,9 @@ import _ from 'lodash';
 import {
     decryptStringWithAES, PROVIDER_MAP
 } from './../../utils/common-functions';
-
+import request from 'request';
+import * as cf from './../../utils/common-functions';
+const PAGE_LIMIT = 20;
 export async function getUserInstallations(payload) {
     return new Promise((resolve, reject) => {
         const API_URL = `${GITHUB_API_URL}/user/installations`;
@@ -65,6 +67,8 @@ export async function getReposByOrg(payload) {
 // prepare repository object array depending upon input key
 function getRepositoryList(integratedRepositories, repositoriesList, list, key) {
     repositoriesList.totalCount = list.total_count;
+    var ab;
+    console.log("a");
 
     // common code to add repositories in list
     if (list.total_count > 0) {
@@ -97,7 +101,7 @@ function getRepositoryList(integratedRepositories, repositoriesList, list, key) 
 
 export function getOrgUsers(payload) {
     return new Promise((resolve, reject) => {
-        const API_URL = `${GITHUB_API_URL}/orgs/${payload.orgSlug}/members`;
+        const API_URL = `${GITHUB_API_URL}/orgs/${payload.orgSlug}/members?per_page=${PAGE_LIMIT}&page=${payload.page}`;
         let requestBody = {
             url: `${API_URL}`,
             method: 'GET',
@@ -108,42 +112,49 @@ export function getOrgUsers(payload) {
             },
             rejectUnauthorized: false
         };
-        sendOauthRequest(requestBody, 'organisation_members')
-            .then(body => {
-                let userList = [];
+        request(requestBody, function (error, response, body) {
+            if (error) {
+                log.error(`Error while sending Oauth request : ${error}`);
+                reject(new errors.CustomError("InternalServerError", "Something went wrong while sending request to remote", 500, 1034));
+            } else if (response.statusCode == 200) {
+                if (typeof body == 'string') {
+                    body = JSON.parse(body);
+                }
+                
+                let nextLink = (response.headers.link !== undefined && body.length > 0) ? response.headers.link : null;
+                let nextPage = cf.extractLinks(nextLink);
+                let lastPage = (nextLink !== null) ? ((nextPage['last'] !== undefined) ? nextPage['last'].page : payload.page) : 1;
+
                 if (body.length > 0) {
+                    payload.total_count = PAGE_LIMIT * lastPage;
                     async.eachSeries(body, async function (user, callback) {
-                        if (payload.integrated_users.indexOf(String(user.id)) === -1) {
-                            let personalDetails = await getUserEmail(payload, user.url);
-                            let userData = {
-                                user_slug: user.login,
-                                id: user.id,
-                                avatar_url: user.avatar_url,
-                                type: user.type,
-                                url: user.url,
-                                email: personalDetails.email,
-                                name: personalDetails.name
-                            };
-                            userList.push(userData);
-                            callback();
-                        } else {
-                            callback();
-                        }
-                    }, function (err) {
+                        let personalDetails = await getUserEmail(payload, user.url);
+                        let userData = {
+                            user_slug: user.login,
+                            id: user.id,
+                            avatar_url: user.avatar_url,
+                            type: user.type,
+                            url: user.url,
+                            email: personalDetails.email,
+                            name: personalDetails.name,
+                            visibility: (payload.integrated_users.indexOf(String(user.id)) === -1) ? true : false
+                        };
+                        (payload.user_list).push(userData);
+                        callback();
+
+                    }, async function (err) {
                         if (err) {
                             log.error('error ' + err);
+                            reject(new errors.CustomError("InternalServerError", "Something went wrong while sending request to remote", 500, 1034));
                         } else {
-                            return resolve(userList);
+                            return resolve(payload);
                         }
                     });
                 } else {
-                    return resolve(userList);
+                    return resolve(payload);
                 }
-            })
-            .catch(error => {
-                log.error(error);
-                reject(error);
-            });
+            }
+        });
     });
 }
 
