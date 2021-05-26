@@ -35,7 +35,6 @@ public class DemoSubproject2 {
 	}
 	
 	public void x(){
-		System.out.println("text");
 		try{
 			
 		}
