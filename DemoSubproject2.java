@@ -20,7 +20,9 @@ public class DemoSubproject2 {
 		
 			fook = new DemoSubproject2();
 		}              
-		
+		System.out.println("therasdasde there");
+		System.out.println("therasdasde there");
+		System.out.println("therasdasde there");
 		
 		return fook;
 		
