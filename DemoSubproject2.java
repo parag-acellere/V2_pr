@@ -29,6 +29,7 @@ public class DemoSubproject2 {
 	
 	
 	public static int getIntValue() {
+	System.out.println("there there");
 	int k = 58; 
 	return k;	
 	}
