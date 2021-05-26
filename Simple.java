@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 
 class Simple{      
 public static void main(String args[]){      
+ System.out.println(" Java");  
  int param1=1;
 	 int param2=2;
  log.debug("log something" + " and " + "concat strings");
