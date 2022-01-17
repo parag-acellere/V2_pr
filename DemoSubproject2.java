@@ -22,6 +22,7 @@ public class DemoSubproject2 {
 		}              
 		System.out.println("therasdasde there");
 
+	int s1 = 58;  
 	int s = 58;  
 System.out.println("hello there there");
 		
