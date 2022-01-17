@@ -22,8 +22,7 @@ public class DemoSubproject2 {
 		}              
 		System.out.println("therasdasde there");
 
-	int s = 58; 
-	int sfff = 58; 
+	int s = 58;  
 	int gggfff = 58; 
 System.out.println("hello there there");
 		
