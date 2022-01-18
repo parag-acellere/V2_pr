@@ -22,9 +22,6 @@ public class DemoSubproject2 {
 		}              
 		System.out.println("therasdasde there");
 
-	int s = 58; 
-	int d1s = 58; 
-	int d14s = 58; 
 		System.out.println(d14s);
 		return fook;
 		
