@@ -33,6 +33,7 @@ public class DemoSubproject2 {
 		System.out.println("text");
 		try{
 			
+		System.out.println("updated text");
 		}
 		catch(Exception ex){
 			
