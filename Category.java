@@ -54,7 +54,6 @@ public class Category extends Vehicle implements NewInterface {
 
     public boolean diff(int x) {
         
-        System.out.println(x);
         if (true)
             this.x = x + 1;
         else
@@ -71,6 +70,7 @@ public class Category extends Vehicle implements NewInterface {
     }
 
     boolean bar(int x, int y) {
+        System.out.println(x,y);
         return (x != y) ? diff(x) : same(y);
     }
 
