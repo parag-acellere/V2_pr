@@ -8,14 +8,13 @@ public class DemoSubproject2 {
 	App app;
 	
 	public static void main(String[] args) {
-		 System.out.println(""); 
 		int k_subproject;
 	}
 	
 	private static DemoSubproject2 fook = null;
 
 	public static DemoSubproject2 getFook() { 
-		 System.out.println(""); 
+		 System.out.println("12312323"); 
 		 
 		if (fook==null) {
 			fook = new DemoSubproject2();
@@ -33,6 +32,7 @@ public class DemoSubproject2 {
 	public void x(){
 		try{
 			
+		 System.out.println("12312323"); 
 		}
 		catch(Exception ex){
 			
