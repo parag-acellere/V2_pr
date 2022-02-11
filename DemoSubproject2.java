@@ -8,6 +8,7 @@ public class DemoSubproject2 {
 	App app;
 	
 	public static void main(String[] args) {
+		 System.out.println(""); 
 		int k_subproject;
 	}
 	
@@ -30,10 +31,8 @@ public class DemoSubproject2 {
 	}
 	
 	public void x(){
-		System.out.println("text");
 		try{
 			
-		System.out.println("updated text");
 		}
 		catch(Exception ex){
 			
