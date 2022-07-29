@@ -2,4 +2,5 @@ class New{
 public static void main(String args[]){      
  System.out.println("Hello new");   
  System.out.println("Hello new 2");  
-}  } 
+}  
+} }
